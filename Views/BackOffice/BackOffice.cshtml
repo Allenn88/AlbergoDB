@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Backoffice";
+}
+
+<h2>Benvenuto nel Backoffice</h2>
+
+<p>
+    Questa è la tua pagina di Backoffice. Da qui, puoi gestire le varie funzionalità del tuo sito.
+</p>
+
+<div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-secondary " onclick="location.href='@Url.Action("AddCliente", "Backoffice")'">Aggiungi Cliente</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("AddPrenotazione", "Backoffice")'">Aggiungi Prenotazione</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("AddServizi", "Backoffice")'">Servizio Aggiuntivo</button>
+</div>
+
+<br/>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID Prenotazione</th>
+                <th>Data Prenotazione</th>
+                <th>Numero Progressivo Anno</th>
+                <th>Anno</th>
+                <th>Periodo Dal</th>
+                <th>Periodo Al</th>
+                <th>Caparra Confirmatoria</th>
+                <th>Tariffa Applicata</th>
+                <th>Dettagli</th>
+                <th>ID Cliente</th>
+                <th>ID Camere</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prenotazione in Model)
+            {
+                <tr>
+                    <td>@prenotazione.IDPrenotazione</td>
+                    <td>@prenotazione.DataPrenotazione.ToString("dd/MM/yyyy")</td>
+                    <td>@prenotazione.NumeroProgressivoAnno</td>
+                    <td>@prenotazione.Anno</td>
+                    <td>@prenotazione.PeriodoDal.ToString("dd/MM/yyyy")</td>
+                    <td>@prenotazione.PeriodoAl.ToString("dd/MM/yyyy")</td>
+                    <td>@prenotazione.CaparraConfirmatoria</td>
+                    <td>@prenotazione.TariffaApplicata</td>
+                    <td>@prenotazione.Dettagli</td>
+                    <td>@prenotazione.IDCliente</td>
+                    <td>@prenotazione.IDCamere</td>
+                    <td><button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("CheckOut", "BackOffice", new { id = prenotazione.IDPrenotazione })'">Checkout</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

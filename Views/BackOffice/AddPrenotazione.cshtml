@@ -1,0 +1,73 @@
+﻿@model AlbergoDB.Models.Prenotazione
+@{
+    ViewBag.Title = "Aggiungi Prenotazione";
+}
+<h2>Aggiungi Prenotazione</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>Prenotazione</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.DataPrenotazione, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DataPrenotazione, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+            @Html.ValidationMessageFor(model => model.DataPrenotazione, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PeriodoDal, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PeriodoDal, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+            @Html.ValidationMessageFor(model => model.PeriodoDal, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PeriodoAl, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PeriodoAl, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+            @Html.ValidationMessageFor(model => model.PeriodoAl, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CaparraConfirmatoria, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CaparraConfirmatoria, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CaparraConfirmatoria, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.TariffaApplicata, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TariffaApplicata, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TariffaApplicata, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IDCliente, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.IDCliente, (SelectList)ViewBag.IDCliente, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.IDCliente, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.IDCamere, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.IDCamere, (SelectList)ViewBag.IDCamere, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.IDCamere, "", new { @class = "text-danger" })
+    </div>
+</div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Crea" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+<div>
+    @Html.ActionLink("Back to List", "BackOffice")
+</div>

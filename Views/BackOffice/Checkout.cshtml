@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "CheckOut";
+}
+
+<h2>CheckOut</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <h3>Prenotazione</h3>
+            <p>Periodo Dal: @ViewBag.Prenotazione.PeriodoDal</p>
+            <p>Periodo Al: @ViewBag.Prenotazione.PeriodoAl</p>
+            <p>Caparra Confirmatoria: @ViewBag.Prenotazione.CaparraConfirmatoria</p>
+            <p>Tariffa Applicata: @ViewBag.Prenotazione.TariffaApplicata</p>
+        </div>
+        <div class="col-md-3">
+            <h3>Cliente</h3>
+            <p>Codice Fiscale: @ViewBag.Cliente.CodiceFiscale</p>
+            <p>Cognome: @ViewBag.Cliente.Cognome</p>
+            <p>Nome: @ViewBag.Cliente.Nome</p>
+            <p>Città: @ViewBag.Cliente.Citta</p>
+            <p>Provincia: @ViewBag.Cliente.Provincia</p>
+            <p>Email: @ViewBag.Cliente.Email</p>
+            <p>Telefono: @ViewBag.Cliente.Telefono</p>
+            <p>Cellulare: @ViewBag.Cliente.Cellulare</p>
+        </div>
+        <div class="col-md-3">
+            <h3>Camera</h3>
+            <p>Descrizione: @ViewBag.Camera.Descrizione</p>
+            <p>Tipologia: @ViewBag.Camera.Tipologia</p>
+        </div>
+        <div class="col-md-3">
+            <h3>Servizi</h3>
+            @foreach (var servizio in ViewBag.Servizi)
+            {
+                <p>Data: @servizio.Data</p>
+                <p>Quantità: @servizio.Quantita</p>
+                <p>Prezzo: @servizio.Prezzo</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    @Html.ActionLink("Back to List", "BackOffice", null, new { @class = "btn btn-primary" })
+</div>
