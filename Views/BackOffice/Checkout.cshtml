@@ -81,7 +81,6 @@
     @Html.ActionLink("Back to List", "BackOffice", null, new { @class = "btn btn-primary" })
 </div>
 
-<!-- Modal per il riepilogo del CheckOut -->
 <div class="modal fade" id="calcolaCheckOutModal" tabindex="-1" role="dialog" aria-labelledby="calcolaCheckOutModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -103,13 +102,19 @@
                 <p>Tariffa Applicata: @ViewBag.Prenotazione.TariffaApplicata</p>
 
                 <h3>Servizi</h3>
-                @foreach (var servizio in ViewBag.Servizi)
-                {
-                    <p>Data: @servizio.Data</p>
-                    <p>Quantità: @servizio.Quantita</p>
-                    <p>Prezzo: @servizio.Prezzo</p>
-                    <hr>
+                @{
+                    decimal sommaServizi = 0;
+                    foreach (var servizio in ViewBag.Servizi)
+                    {
+                        <p>Data: @servizio.Data</p>
+                        <p>Quantità: @servizio.Quantita</p>
+                        <p>Prezzo: @servizio.Prezzo</p>
+                        <hr>
+                        sommaServizi += servizio.Prezzo;
+                    }
                 }
+
+                <p>Somma Servizi: $@sommaServizi</p>
 
                 <h3>Calcolo Importo Totale</h3>
                 @{
@@ -117,22 +122,24 @@
 
                     var periodoDal = DateTime.ParseExact(ViewBag.Prenotazione.PeriodoDal.ToString(formatoData), formatoData, CultureInfo.InvariantCulture);
                     var periodoAl = DateTime.ParseExact(ViewBag.Prenotazione.PeriodoAl.ToString(formatoData), formatoData, CultureInfo.InvariantCulture);
-
                     var giorniPernottamento = (periodoAl - periodoDal).Days;
                     var tariffaApplicata = Convert.ToDecimal(ViewBag.Prenotazione.TariffaApplicata);
                     var importoTotale = giorniPernottamento * tariffaApplicata;
                     var caparraConfirmatoria = Convert.ToDecimal(ViewBag.Prenotazione.CaparraConfirmatoria);
-                    var totaleDaPagare = importoTotale - caparraConfirmatoria;
+
+
+                    var totaleDaPagare = importoTotale + sommaServizi - caparraConfirmatoria;
                 }
 
                 <p>Giorni di Pernottamento: @giorniPernottamento</p>
                 <p>Importo Totale: $@importoTotale</p>
                 <p>Caparra Confirmatoria: $@caparraConfirmatoria</p>
+                <p>Somma Servizi: $@sommaServizi</p>
                 <p>Totale da Pagare: $@totaleDaPagare</p>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-success" id="calcolaCheckOutButton" data-toggle="modal" data-target="#calcolaCheckOutModal">Chiudi</button>
             </div>
         </div>
     </div>

@@ -37,9 +37,9 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-    <script>
+<script>
     $(document).ready(function () {
-        
+
         $('#calcolaCheckOutModal').modal({
             show: false
         });
@@ -47,7 +47,10 @@
         $('#calcolaCheckOutButton').click(function () {
             $('#calcolaCheckOutModal').modal('show');
         });
+        $('#calcolaCheckOutModal').on('hidden.bs.modal', function () {
+            window.location.href = '@Url.Action("BackOffice", "BackOffice")';
+        });
     });
-    </script>
+</script>
 </body>
 </html>

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace AlbergoDB.Controllers
 {
-   
+
     public class BackOfficeController : Controller
     {
 
@@ -96,11 +96,11 @@ namespace AlbergoDB.Controllers
             {
                 while (reader.Read())
                 {
-                    clienti.Add(new Cliente { IDCliente = reader.GetInt32(0), Nome = reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(1)});
+                    clienti.Add(new Cliente { IDCliente = reader.GetInt32(0), Nome = reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(1) });
                 }
             }
 
-    
+
             command = new SqlCommand("SELECT * FROM Camera", conn);
             using (var reader = command.ExecuteReader())
             {
@@ -246,7 +246,16 @@ namespace AlbergoDB.Controllers
                 }
             }
 
-            int giorniPernottamento = (prenotazione.PeriodoAl - prenotazione.PeriodoDal).Days;
+            int giorniPernottamento;
+
+            if (prenotazione.PeriodoAl < prenotazione.PeriodoDal)
+            {
+                DateTime temp = prenotazione.PeriodoDal;
+                prenotazione.PeriodoDal = prenotazione.PeriodoAl;
+                prenotazione.PeriodoAl = temp;
+            }
+
+            giorniPernottamento = (prenotazione.PeriodoAl - prenotazione.PeriodoDal).Days;
 
             command = new SqlCommand("SELECT * FROM Cliente WHERE IDCliente = @idCliente", conn);
             command.Parameters.AddWithValue("@idCliente", prenotazione.IDCliente);
@@ -301,7 +310,7 @@ namespace AlbergoDB.Controllers
                     });
                 }
             }
-         
+
             decimal importoTotale = giorniPernottamento * prenotazione.TariffaApplicata;
             ViewBag.Prenotazione = prenotazione;
             ViewBag.Cliente = cliente;
@@ -312,6 +321,7 @@ namespace AlbergoDB.Controllers
 
             return View();
         }
+
 
     }
 }
