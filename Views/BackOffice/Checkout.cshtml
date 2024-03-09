@@ -1,46 +1,139 @@
-﻿@{
+﻿@using System
+@using System.Globalization
+
+
+@{
     ViewBag.Title = "CheckOut";
 }
 
 <h2>CheckOut</h2>
 
-<div class="container">
+<div class="container mt-5">
     <div class="row">
-        <div class="col-md-3">
-            <h3>Prenotazione</h3>
-            <p>Periodo Dal: @ViewBag.Prenotazione.PeriodoDal</p>
-            <p>Periodo Al: @ViewBag.Prenotazione.PeriodoAl</p>
-            <p>Caparra Confirmatoria: @ViewBag.Prenotazione.CaparraConfirmatoria</p>
-            <p>Tariffa Applicata: @ViewBag.Prenotazione.TariffaApplicata</p>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Prenotazione
+                </div>
+                <div class="card-body">
+                    <h3>Periodo Prenotazione</h3>
+                    <p>Dal: @ViewBag.Prenotazione.PeriodoDal</p>
+                    <p>Al: @ViewBag.Prenotazione.PeriodoAl</p>
+                    <p>Caparra Confirmatoria: @ViewBag.Prenotazione.CaparraConfirmatoria</p>
+                    <p>Tariffa Applicata: @ViewBag.Prenotazione.TariffaApplicata</p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-3">
-            <h3>Cliente</h3>
-            <p>Codice Fiscale: @ViewBag.Cliente.CodiceFiscale</p>
-            <p>Cognome: @ViewBag.Cliente.Cognome</p>
-            <p>Nome: @ViewBag.Cliente.Nome</p>
-            <p>Città: @ViewBag.Cliente.Citta</p>
-            <p>Provincia: @ViewBag.Cliente.Provincia</p>
-            <p>Email: @ViewBag.Cliente.Email</p>
-            <p>Telefono: @ViewBag.Cliente.Telefono</p>
-            <p>Cellulare: @ViewBag.Cliente.Cellulare</p>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    Riepilogo dell'ordine
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">Cliente: @ViewBag.Cliente.Cognome, @ViewBag.Cliente.Nome</li>
+                        <li class="list-group-item">Codice Fiscale: @ViewBag.Cliente.CodiceFiscale</li>
+                        <li class="list-group-item">Città: @ViewBag.Cliente.Citta</li>
+                        <li class="list-group-item">Provincia: @ViewBag.Cliente.Provincia</li>
+                        <li class="list-group-item">Email: @ViewBag.Cliente.Email</li>
+                        <li class="list-group-item">Telefono: @ViewBag.Cliente.Telefono</li>
+                        <li class="list-group-item">Cellulare: @ViewBag.Cliente.Cellulare</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="col-md-3">
-            <h3>Camera</h3>
-            <p>Descrizione: @ViewBag.Camera.Descrizione</p>
-            <p>Tipologia: @ViewBag.Camera.Tipologia</p>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Camera
+                </div>
+                <div class="card-body">
+                    <p>Descrizione: @ViewBag.Camera.Descrizione</p>
+                    <p>Tipologia: @ViewBag.Camera.Tipologia</p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-3">
-            <h3>Servizi</h3>
-            @foreach (var servizio in ViewBag.Servizi)
-            {
-                <p>Data: @servizio.Data</p>
-                <p>Quantità: @servizio.Quantita</p>
-                <p>Prezzo: @servizio.Prezzo</p>
-            }
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Servizi
+                </div>
+                <div class="card-body">
+                    @foreach (var servizio in ViewBag.Servizi)
+                    {
+                        <p>Data: @servizio.Data</p>
+                        <p>Quantità: @servizio.Quantita</p>
+                        <p>Prezzo: @servizio.Prezzo</p>
+                        <hr>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="mt-3">
+    <button class="btn btn-success" data-toggle="modal" data-target="#calcolaCheckOutModal">Calcola CheckOut</button>
     @Html.ActionLink("Back to List", "BackOffice", null, new { @class = "btn btn-primary" })
+</div>
+
+<!-- Modal per il riepilogo del CheckOut -->
+<div class="modal fade" id="calcolaCheckOutModal" tabindex="-1" role="dialog" aria-labelledby="calcolaCheckOutModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="calcolaCheckOutModalLabel">Riepilogo CheckOut</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Dettagli Cliente</h3>
+                <p>Nome: @ViewBag.Cliente.Nome @ViewBag.Cliente.Cognome</p>
+                <p>Codice Fiscale: @ViewBag.Cliente.CodiceFiscale</p>
+
+                <h3>Dettagli Prenotazione</h3>
+                <p>Periodo Dal: @ViewBag.Prenotazione.PeriodoDal</p>
+                <p>Periodo Al: @ViewBag.Prenotazione.PeriodoAl</p>
+                <p>Caparra Confirmatoria: @ViewBag.Prenotazione.CaparraConfirmatoria</p>
+                <p>Tariffa Applicata: @ViewBag.Prenotazione.TariffaApplicata</p>
+
+                <h3>Servizi</h3>
+                @foreach (var servizio in ViewBag.Servizi)
+                {
+                    <p>Data: @servizio.Data</p>
+                    <p>Quantità: @servizio.Quantita</p>
+                    <p>Prezzo: @servizio.Prezzo</p>
+                    <hr>
+                }
+
+                <h3>Calcolo Importo Totale</h3>
+                @{
+                    var formatoData = "dd/MM/yyyy";
+
+                    var periodoDal = DateTime.ParseExact(ViewBag.Prenotazione.PeriodoDal.ToString(formatoData), formatoData, CultureInfo.InvariantCulture);
+                    var periodoAl = DateTime.ParseExact(ViewBag.Prenotazione.PeriodoAl.ToString(formatoData), formatoData, CultureInfo.InvariantCulture);
+
+                    var giorniPernottamento = (periodoAl - periodoDal).Days;
+                    var tariffaApplicata = Convert.ToDecimal(ViewBag.Prenotazione.TariffaApplicata);
+                    var importoTotale = giorniPernottamento * tariffaApplicata;
+                    var caparraConfirmatoria = Convert.ToDecimal(ViewBag.Prenotazione.CaparraConfirmatoria);
+                    var totaleDaPagare = importoTotale - caparraConfirmatoria;
+                }
+
+                <p>Giorni di Pernottamento: @giorniPernottamento</p>
+                <p>Importo Totale: $@importoTotale</p>
+                <p>Caparra Confirmatoria: $@caparraConfirmatoria</p>
+                <p>Totale da Pagare: $@totaleDaPagare</p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
 </div>

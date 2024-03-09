@@ -222,7 +222,6 @@ namespace AlbergoDB.Controllers
             var conn = new SqlConnection(connString);
             conn.Open();
 
-            // Recupera la prenotazione specifica
             var command = new SqlCommand("SELECT * FROM Prenotazione WHERE IDPrenotazione = @id", conn);
             command.Parameters.AddWithValue("@id", id);
             Prenotazione prenotazione = null;
@@ -247,7 +246,8 @@ namespace AlbergoDB.Controllers
                 }
             }
 
-            // Recupera il cliente associato
+            int giorniPernottamento = (prenotazione.PeriodoAl - prenotazione.PeriodoDal).Days;
+
             command = new SqlCommand("SELECT * FROM Cliente WHERE IDCliente = @idCliente", conn);
             command.Parameters.AddWithValue("@idCliente", prenotazione.IDCliente);
             Cliente cliente = null;
@@ -269,8 +269,6 @@ namespace AlbergoDB.Controllers
                     };
                 }
             }
-
-            // Recupera la camera associata
             command = new SqlCommand("SELECT * FROM Camera WHERE IDCamere = @idCamere", conn);
             command.Parameters.AddWithValue("@idCamere", prenotazione.IDCamere);
             Camera camera = null;
@@ -286,8 +284,6 @@ namespace AlbergoDB.Controllers
                     };
                 }
             }
-
-            // Recupera i servizi associati
             command = new SqlCommand("SELECT * FROM Servizi WHERE IDPrenotazione = @idPrenotazione", conn);
             command.Parameters.AddWithValue("@idPrenotazione", prenotazione.IDPrenotazione);
             List<Servizi> servizi = new List<Servizi>();
@@ -305,14 +301,17 @@ namespace AlbergoDB.Controllers
                     });
                 }
             }
-
-            // Passa i dati alla vista utilizzando ViewBag
+         
+            decimal importoTotale = giorniPernottamento * prenotazione.TariffaApplicata;
             ViewBag.Prenotazione = prenotazione;
             ViewBag.Cliente = cliente;
             ViewBag.Camera = camera;
             ViewBag.Servizi = servizi;
+            ViewBag.GiorniPernottamento = giorniPernottamento;
+            ViewBag.ImportoTotale = importoTotale;
 
             return View();
         }
+
     }
 }
